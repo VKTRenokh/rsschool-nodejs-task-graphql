@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-console.log(await prisma.profile.findMany());
+console.log(await prisma.user.findMany());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

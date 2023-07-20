@@ -1,6 +1,7 @@
+import { Profile } from '@prisma/client';
 import { GraphQLBoolean, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
 
-export const profile = new GraphQLObjectType({
+export const GraphQLProfile = new GraphQLObjectType({
   name: 'Profile',
   fields: {
     isMale: {
@@ -14,6 +15,12 @@ export const profile = new GraphQLObjectType({
     },
     yearOfBirth: {
       type: GraphQLInt,
+    },
+    memberType: {
+      type: GraphQLString,
+      resolve: (profile: Profile) => {
+        return profile.memberTypeId || null;
+      },
     },
   },
 });
