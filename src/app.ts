@@ -2,6 +2,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import { FastifyPluginAsync } from 'fastify';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+console.log(await prisma.profile.findMany());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
