@@ -4,12 +4,10 @@ import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
 import { FastifyPluginAsync } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 
+const _ = new PrismaClient();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const prisma = new PrismaClient();
-
-console.log(await prisma.memberType.findMany());
 
 const opts: Partial<AutoloadPluginOptions> = {
   ignoreFilter: (path: string) => {

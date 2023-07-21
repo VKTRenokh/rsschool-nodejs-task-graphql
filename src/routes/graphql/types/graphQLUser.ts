@@ -1,10 +1,10 @@
-import { GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const GraphQLUser = new GraphQLObjectType({
   name: 'User',
   fields: {
     balance: {
-      type: GraphQLInt,
+      type: GraphQLFloat,
     },
     id: {
       type: GraphQLString,
