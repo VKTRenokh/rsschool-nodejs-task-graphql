@@ -64,20 +64,15 @@ export const query = new GraphQLObjectType({
         },
       },
       resolve: async (_, { id }: { id: MemberTypeId }) => {
-        console.log('member type call with id ', id);
-
         if (!id) {
-          console.log('no member type id');
           return null;
         }
 
-        const data = await prisma.memberType.findFirst({
+        return await prisma.memberType.findFirst({
           where: {
             id,
           },
         });
-
-        return data;
       },
     },
     post: {
@@ -92,7 +87,7 @@ export const query = new GraphQLObjectType({
           return null;
         }
 
-        return prisma.memberType.findFirst({
+        return prisma.post.findFirst({
           where: {
             id: id,
           },

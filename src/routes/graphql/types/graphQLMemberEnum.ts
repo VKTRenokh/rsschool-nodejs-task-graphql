@@ -1,7 +1,7 @@
 import { GraphQLEnumType } from 'graphql';
 
 export const GraphQLMemberEnum = new GraphQLEnumType({
-  name: 'MemberEnum',
+  name: 'MemberTypeId',
   values: {
     basic: { value: 'basic' },
     buisness: { value: 'buisness' },
