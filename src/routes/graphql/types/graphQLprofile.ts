@@ -1,7 +1,8 @@
-import { GraphQLBoolean, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
-import { UUIDType, isUUID } from './uuid.js';
+import { GraphQLBoolean, GraphQLInt, GraphQLObjectType } from 'graphql';
+import { UUIDType } from './uuid.js';
 import { PrismaClient } from '@prisma/client';
 import { GraphQLMemberType } from './graphQLMemberType.js';
+import { GraphQLMemberEnum } from './graphQLMemberEnum.js';
 
 const prisma = new PrismaClient();
 
@@ -12,25 +13,24 @@ export const GraphQLProfile = new GraphQLObjectType({
       type: GraphQLBoolean,
     },
     id: {
-      type: GraphQLString,
+      type: UUIDType,
     },
     userId: {
-      type: GraphQLString,
+      type: UUIDType,
     },
     yearOfBirth: {
       type: GraphQLInt,
     },
+    memberTypeId: {
+      type: UUIDType,
+    },
     memberType: {
       type: GraphQLMemberType,
-      args: { id: { type: UUIDType } },
-      resolve: async (_, { id }) => {
-        if (!isUUID(id)) {
-          return null;
-        }
-
+      args: { memberTypeId: { type: GraphQLMemberEnum } },
+      resolve: async (_, { memberTypeId }) => {
         return prisma.memberType.findFirst({
           where: {
-            id,
+            id: memberTypeId,
           },
         });
       },

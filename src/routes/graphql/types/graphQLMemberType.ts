@@ -1,9 +1,8 @@
-import { MemberType } from '@prisma/client';
-import { GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
 import { GraphQLMemberEnum } from './graphQLMemberEnum.js';
 
 export const GraphQLMemberType = new GraphQLObjectType({
-  name: 'MembersTypes',
+  name: 'MemberType',
   fields: {
     id: {
       type: GraphQLMemberEnum,

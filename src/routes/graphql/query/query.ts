@@ -104,7 +104,7 @@ export const query = new GraphQLObjectType({
 
         return await prisma.profile.findFirst({
           where: {
-            id: id,
+            id,
           },
         });
       },

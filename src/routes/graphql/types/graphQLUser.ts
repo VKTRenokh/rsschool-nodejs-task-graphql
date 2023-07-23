@@ -26,11 +26,7 @@ export const GraphQLUser = new GraphQLObjectType({
     },
     profile: {
       type: GraphQLProfile,
-      args: {
-        id: {
-          type: UUIDType,
-        },
-      },
+      args: { id: { type: UUIDType } },
       resolve: async ({ id }) => {
         if (!isUUID(id)) {
           return null;
@@ -38,7 +34,7 @@ export const GraphQLUser = new GraphQLObjectType({
 
         return await prisma.profile.findFirst({
           where: {
-            id,
+            userId: id,
           },
         });
       },
@@ -57,7 +53,7 @@ export const GraphQLUser = new GraphQLObjectType({
 
         return await prisma.post.findMany({
           where: {
-            id,
+            authorId: id,
           },
         });
       },
