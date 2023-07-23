@@ -97,7 +97,7 @@ export const GraphQLUser = new GraphQLObjectType({
           where: {
             subscribedToUser: {
               some: {
-                authorId: id,
+                subscriberId: id,
               },
             },
           },
