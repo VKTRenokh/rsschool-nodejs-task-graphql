@@ -47,12 +47,12 @@ export const GraphQLUser = new GraphQLObjectType({
       type: new GraphQLList(GraphQLPost),
       args: {
         id: {
-          type: new GraphQLNonNull(UUIDType),
+          type: UUIDType,
         },
       },
       resolve: async ({ id }) => {
         if (!isUUID(id)) {
-          return;
+          return null;
         }
 
         return await prisma.post.findMany({
@@ -66,10 +66,14 @@ export const GraphQLUser = new GraphQLObjectType({
       type: new GraphQLList(GraphQLUser),
       args: {
         id: {
-          type: new GraphQLNonNull(UUIDType),
+          type: UUIDType,
         },
       },
       resolve: async ({ id }) => {
+        if (!isUUID(id)) {
+          return null;
+        }
+
         return prisma.user.findMany({
           where: {
             userSubscribedTo: {
@@ -85,10 +89,14 @@ export const GraphQLUser = new GraphQLObjectType({
       type: new GraphQLList(new GraphQLNonNull(GraphQLUser)),
       args: {
         id: {
-          type: new GraphQLNonNull(UUIDType),
+          type: UUIDType,
         },
       },
       resolve: async ({ id }) => {
+        if (!isUUID(id)) {
+          return null;
+        }
+
         return await prisma.user.findMany({
           where: {
             subscribedToUser: {
