@@ -17,7 +17,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
     async handler(req) {
       const schema = new GraphQLSchema({
         query,
-        mutation: mutation,
+        mutation,
       });
 
       const data = await graphql({

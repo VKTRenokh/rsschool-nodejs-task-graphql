@@ -1,6 +1,10 @@
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const mutation = new GraphQLObjectType({
   name: 'rootMutation',
-  fields: () => ({}),
+  fields: () => ({
+    addUser: {
+      type: GraphQLString, // rmemove this
+    },
+  }),
 });
