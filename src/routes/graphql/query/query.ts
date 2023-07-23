@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { GraphQLProfile } from '../types/graphQLprofile.js';
 import { PrismaClient } from '@prisma/client';
 import { GraphQLUser } from '../types/graphQLUser.js';
@@ -44,11 +44,7 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { id }) => {
-        if (!isUUID(id)) {
-          return;
-        }
-
+      resolve: async (_, { id }: { id: string }) => {
         return await prisma.user.findFirst({
           where: {
             id: id,
@@ -101,12 +97,12 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: (_, { id }) => {
+      resolve: async (_, { id }) => {
         if (!isUUID(id)) {
           return null;
         }
 
-        return prisma.profile.findFirst({
+        return await prisma.profile.findFirst({
           where: {
             id: id,
           },

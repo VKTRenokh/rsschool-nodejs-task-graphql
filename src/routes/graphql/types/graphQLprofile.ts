@@ -2,7 +2,7 @@ import { Profile } from '@prisma/client';
 import { GraphQLBoolean, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const GraphQLProfile = new GraphQLObjectType({
-  name: 'Profile',
+  name: 'profile',
   fields: {
     isMale: {
       type: GraphQLBoolean,
