@@ -46,8 +46,6 @@ await test('gql-mutations', async (t) => {
       },
     });
 
-    console.log('errors', errors, 'data', data);
-
     const { body: foundCreatedPost } = await getPost(app, data.createPost.id);
     const { body: foundCreatedUser } = await getUser(app, data.createUser.id);
     const { body: foundCreatedProfile } = await getProfile(app, data.createProfile.id);
@@ -105,8 +103,6 @@ await test('gql-mutations', async (t) => {
     const { body: foundCreatedUser } = await getUser(app, user1.id);
     const { body: foundCreatedProfile } = await getProfile(app, profile1.id);
 
-    console.log(errors);
-
     t.ok(!errors);
     t.ok(foundDeletedPost === null);
     t.ok(foundCreatedUser === null);
@@ -147,8 +143,6 @@ await test('gql-mutations', async (t) => {
         userDto: { name: changedName },
       },
     });
-
-    console.log(errors, 'errors', data, 'data');
 
     const { body: foundChangedPost } = await getPost(app, data.changePost.id);
     const { body: foundChangedUser } = await getUser(app, data.changeUser.id);

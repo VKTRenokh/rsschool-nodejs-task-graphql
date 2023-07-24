@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { GraphQLPost } from '../types/graphQLPost.js';
 
 import { PrismaClient } from '@prisma/client';
@@ -148,6 +148,54 @@ export const mutation = new GraphQLObjectType({
           },
           data: dto,
         });
+      },
+    },
+    subscribeTo: {
+      type: GraphQLUser,
+      args: {
+        userId: {
+          type: new GraphQLNonNull(UUIDType),
+        },
+        authorId: {
+          type: new GraphQLNonNull(UUIDType),
+        },
+      },
+      resolve: async (_, { userId, authorId }) => {
+        return await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            userSubscribedTo: {
+              create: {
+                authorId: authorId,
+              },
+            },
+          },
+        });
+      },
+    },
+    unsubscribeFrom: {
+      type: GraphQLString,
+      args: {
+        userId: {
+          type: new GraphQLNonNull(UUIDType),
+        },
+        authorId: {
+          type: new GraphQLNonNull(UUIDType),
+        },
+      },
+      resolve: async (_, { userId, authorId }) => {
+        await prisma.subscribersOnAuthors.delete({
+          where: {
+            subscriberId_authorId: {
+              authorId,
+              subscriberId: userId,
+            },
+          },
+        });
+
+        return 'deleted';
       },
     },
   },
