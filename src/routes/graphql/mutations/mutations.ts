@@ -7,6 +7,7 @@ import { userInputType } from './types/userInputType.js';
 import { GraphQLUser } from '../types/graphQLUser.js';
 import { GraphQLProfile } from '../types/graphQLprofile.js';
 import { profileInputType } from './types/profileInputType.js';
+import { UUIDType } from '../types/uuid.js';
 
 const prisma = new PrismaClient();
 
@@ -48,6 +49,45 @@ export const mutation = new GraphQLObjectType({
         return await prisma.profile.create({
           data: dto,
         });
+      },
+    },
+    deletePost: {
+      type: UUIDType,
+      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      resolve: async (_, { id }) => {
+        await prisma.post.delete({
+          where: {
+            id,
+          },
+        });
+
+        return id;
+      },
+    },
+    deleteUser: {
+      type: UUIDType,
+      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      resolve: async (_, { id }) => {
+        await prisma.user.delete({
+          where: {
+            id,
+          },
+        });
+
+        return id;
+      },
+    },
+    deleteProfile: {
+      type: UUIDType,
+      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      resolve: async (_, { id }) => {
+        await prisma.profile.delete({
+          where: {
+            id,
+          },
+        });
+
+        return id;
       },
     },
   },
