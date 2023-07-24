@@ -35,6 +35,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         variableValues: req.body.variables,
         contextValue: {
           fastify,
+          prisma: fastify.prisma,
         },
       });
 

@@ -1,6 +1,5 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { GraphQLProfile } from '../types/graphQLprofile.js';
-import { PrismaClient } from '@prisma/client';
 import { GraphQLUser } from '../types/graphQLUser.js';
 import { GraphQLMemberType } from '../types/graphQLMemberType.js';
 import { UUIDType, isUUID } from '../types/uuid.js';
@@ -8,32 +7,30 @@ import { GraphQLPost } from '../types/graphQLPost.js';
 import { MemberTypeId } from '../../member-types/schemas.js';
 import { GraphQLMemberEnum } from '../types/graphQLMemberEnum.js';
 
-const prisma = new PrismaClient();
-
 export const query = new GraphQLObjectType({
   name: 'root',
   fields: {
     profiles: {
       type: new GraphQLList(GraphQLProfile),
-      resolve: () => {
+      resolve: (_, _2, { prisma }) => {
         return prisma.profile.findMany();
       },
     },
     users: {
       type: new GraphQLList(GraphQLUser),
-      resolve: () => {
+      resolve: (_, _2, { prisma }) => {
         return prisma.user.findMany();
       },
     },
     memberTypes: {
       type: new GraphQLList(GraphQLMemberType),
-      resolve: () => {
+      resolve: (_, _2, { prisma }) => {
         return prisma.memberType.findMany();
       },
     },
     posts: {
       type: new GraphQLList(GraphQLPost),
-      resolve: () => {
+      resolve: (_, _2, { prisma }) => {
         return prisma.post.findMany();
       },
     },
@@ -44,7 +41,7 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { id }: { id: string }) => {
+      resolve: async (_, { id }: { id: string }, { prisma }) => {
         return await prisma.user.findFirst({
           where: {
             id: id,
@@ -59,7 +56,7 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLMemberEnum),
         },
       },
-      resolve: async (_, { id }: { id: MemberTypeId }) => {
+      resolve: async (_, { id }: { id: MemberTypeId }, { prisma }) => {
         if (!id) {
           return null;
         }
@@ -78,7 +75,7 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { id }) => {
+      resolve: async (_, { id }, { prisma }) => {
         if (!isUUID(id)) {
           return null;
         }
@@ -97,7 +94,7 @@ export const query = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { id }) => {
+      resolve: async (_, { id }, { prisma }) => {
         if (!isUUID(id)) {
           return null;
         }

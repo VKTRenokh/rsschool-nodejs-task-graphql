@@ -12,8 +12,6 @@ import { changeUserInput } from './types/changeUserInput.js';
 import { changeProfileInput } from './types/changeProfileInput.js';
 import { changePostInput } from './types/changePostInput.js';
 
-const prisma = new PrismaClient();
-
 export const mutation = new GraphQLObjectType({
   name: 'rootMutation',
   fields: {
@@ -24,9 +22,7 @@ export const mutation = new GraphQLObjectType({
           type: new GraphQLNonNull(postInputType),
         },
       },
-      resolve: async (_, { dto }) => {
-        console.log('createPost mutation resolve call');
-
+      resolve: async (_, { dto }, { prisma }: { prisma: PrismaClient }) => {
         const created = await prisma.post.create({
           data: dto,
         });
@@ -39,7 +35,7 @@ export const mutation = new GraphQLObjectType({
     createUser: {
       type: GraphQLUser,
       args: { dto: { type: userInputType } },
-      resolve: async (_, { dto }) => {
+      resolve: async (_, { dto }, { prisma }) => {
         return prisma.user.create({
           data: dto,
         });
@@ -48,7 +44,7 @@ export const mutation = new GraphQLObjectType({
     createProfile: {
       type: GraphQLProfile,
       args: { dto: { type: profileInputType } },
-      resolve: async (_, { dto }) => {
+      resolve: async (_, { dto }, { prisma }) => {
         return await prisma.profile.create({
           data: dto,
         });
@@ -57,7 +53,7 @@ export const mutation = new GraphQLObjectType({
     deletePost: {
       type: UUIDType,
       args: { id: { type: new GraphQLNonNull(UUIDType) } },
-      resolve: async (_, { id }) => {
+      resolve: async (_, { id }, { prisma }) => {
         await prisma.post.delete({
           where: {
             id,
@@ -70,7 +66,7 @@ export const mutation = new GraphQLObjectType({
     deleteUser: {
       type: UUIDType,
       args: { id: { type: new GraphQLNonNull(UUIDType) } },
-      resolve: async (_, { id }) => {
+      resolve: async (_, { id }, { prisma }) => {
         await prisma.user.delete({
           where: {
             id,
@@ -83,7 +79,7 @@ export const mutation = new GraphQLObjectType({
     deleteProfile: {
       type: UUIDType,
       args: { id: { type: new GraphQLNonNull(UUIDType) } },
-      resolve: async (_, { id }) => {
+      resolve: async (_, { id }, { prisma }) => {
         await prisma.profile.delete({
           where: {
             id,
@@ -103,7 +99,7 @@ export const mutation = new GraphQLObjectType({
           type: changeUserInput,
         },
       },
-      resolve: async (_, { id, dto }) => {
+      resolve: async (_, { id, dto }, { prisma }) => {
         return await prisma.user.update({
           where: {
             id: id,
@@ -122,7 +118,7 @@ export const mutation = new GraphQLObjectType({
           type: changePostInput,
         },
       },
-      resolve: async (_, { id, dto }) => {
+      resolve: async (_, { id, dto }, { prisma }) => {
         return prisma.post.update({
           where: {
             id,
@@ -141,7 +137,7 @@ export const mutation = new GraphQLObjectType({
           type: changeProfileInput,
         },
       },
-      resolve: async (_, { id, dto }) => {
+      resolve: async (_, { id, dto }, { prisma }) => {
         return await prisma.profile.update({
           where: {
             id,
@@ -160,7 +156,7 @@ export const mutation = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { userId, authorId }) => {
+      resolve: async (_, { userId, authorId }, { prisma }) => {
         return await prisma.user.update({
           where: {
             id: userId,
@@ -185,7 +181,7 @@ export const mutation = new GraphQLObjectType({
           type: new GraphQLNonNull(UUIDType),
         },
       },
-      resolve: async (_, { userId, authorId }) => {
+      resolve: async (_, { userId, authorId }, { prisma }) => {
         await prisma.subscribersOnAuthors.delete({
           where: {
             subscriberId_authorId: {
